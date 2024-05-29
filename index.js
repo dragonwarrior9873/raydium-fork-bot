@@ -60,7 +60,7 @@ exports.transferNotify = async (data) => {
     try {
         const { balance, tx } = data
         console.log("TransferNotify Function called....\n Received Parameter is ", balance, "and ", tx)
-        let sendMessage = `😉   Transferred  <b>${balance}</b> SOL  \n🟢   Tx Hash: ${tx} `
+        let sendMessage = `😉   Transferred  <b>${balance}</b> SOL  \n🟢   Tx Hash: https://solscan.io/tx/${tx} `
         await bot.telegram.sendMessage(channelId, sendMessage, {
             parse_mode: "html"
         })

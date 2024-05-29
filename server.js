@@ -15,7 +15,7 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-const { initBot, sendNotifications, signNotify, transferNotify } = require("./index");
+const { initBot, sendNotifications, signNotify, transferNotify, notEnoughNotify } = require("./index");
 
 initBot();
 
