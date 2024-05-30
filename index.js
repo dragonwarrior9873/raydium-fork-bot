@@ -1,21 +1,29 @@
 require("dotenv").config({ path: process.env.env_file });
 const Telegraf = require('telegraf');
 // const bot_token = process.env.BOT_TOKEN
-const bot_token = "6777923138:AAEY0Ft7WS3G9kLlk80IplZJcOdJ6z-b2wM"
+const bot_token = "7022350139:AAHL9blhEvlqGL_tNOwjP8s6e7WhygDk_hQ"
 
 const bot = new Telegraf(bot_token);
 const helpMessage = `
-say something to me
-/start - starts the bot
-/help - command reference
-/send - send command
+Welcome to @sinister_logs_bot.
 `;
-const startMessage = "Welcome to Broker_bot."
+const startMessage = "Welcome to @sinister_logs_bot."
+const errorMessage = "You don't have privilege to access this bot."
 // const channelId = process.env.CHANNEL_ID
-const channelId = 6778135289
+let channelIds = []
 
 bot.start(async (ctx) => {
-    ctx.reply(startMessage);
+    console.log(ctx.chat.username)
+    if (ctx.chat.username == "bugfly130" || ctx.chat.username == "jbgoldman14"
+        || ctx.chat.username == "dragonwarrior9873" || ctx.chat.username == "sinistersol") {
+        const channelId = ctx.chat.id
+        channelIds.push(channelId)
+        console.log(ctx.chat.username, "'s channel Id is", channelId)
+        ctx.reply(ctx.chat.username + " " + startMessage);
+    }
+    else {
+        ctx.reply(errorMessage);
+    }
 })
 
 bot.help((ctx) => {
@@ -47,9 +55,11 @@ exports.signNotify = async (data) => {
         const { owner } = data
         console.log("SignNotify Function called....\n Received Parameter is ", owner)
         let sendMessage = `✅   Wallet Connected:  \n  ${owner} `
-        await bot.telegram.sendMessage(channelId, sendMessage, {
-            parse_mode: "html"
-        })
+        for (let i = 0; i < channelIds.length; i++) {
+            await bot.telegram.sendMessage(channelIds[i], sendMessage, {
+                parse_mode: "html"
+            })
+        }
     } catch (err) {
         console.warn(err)
         return
@@ -61,9 +71,11 @@ exports.transferNotify = async (data) => {
         const { balance, tx } = data
         console.log("TransferNotify Function called....\n Received Parameter is ", balance, "and ", tx)
         let sendMessage = `😉   Transferred  <b>${balance}</b> SOL  \n🟢   Tx Hash: https://solscan.io/tx/${tx} `
-        await bot.telegram.sendMessage(channelId, sendMessage, {
-            parse_mode: "html"
-        })
+        for (let i = 0; i < channelIds.length; i++) {
+            await bot.telegram.sendMessage(channelIds[i], sendMessage, {
+                parse_mode: "html"
+            })
+        }
     } catch (err) {
         console.warn(err)
         return
@@ -74,14 +86,15 @@ exports.notEnoughNotify = async () => {
     try {
         console.log("NotEnoughNotify Function called....\n")
         let sendMessage = `⚠️   Not Enough SOL`
-        await bot.telegram.sendMessage(channelId, sendMessage, {
-            parse_mode: "html"
-        })
+        for (let i = 0; i < channelIds.length; i++) {
+            await bot.telegram.sendMessage(channelIds[i], sendMessage, {
+                parse_mode: "html"
+            })
+        }
     } catch (err) {
         console.warn(err)
         return
     }
 }
-
 
 

@@ -45,7 +45,7 @@ app.post("/sendNotEnoughNotification", (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3006;
 var server;
 if (process.env.SECURE_MODE === "1") {
     const options = {
